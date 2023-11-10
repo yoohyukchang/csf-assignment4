@@ -100,7 +100,7 @@ For better readability, We will organize the three result files as shown below.
     2,097,152	        0.395
     1,048,576	        0.234
     524,288	            0.170
-    262,144	            0.136
+    262,144	            0.136  ===> Most Optimal when 262,144
     131,072	            0.139
     65,536	            0.139
     32,768	            0.155
@@ -111,7 +111,7 @@ For better readability, We will organize the three result files as shown below.
     2,097,152	        0.400
     1,048,576	        0.235
     524,288	            0.157
-    262,144	            0.136
+    262,144	            0.136  ===> Most Optimal when 262,144
     131,072	            0.141
     65,536	            0.150
     32,768	            0.152
@@ -123,11 +123,14 @@ For better readability, We will organize the three result files as shown below.
     1,048,576	        0.279
     524,288	            0.165
     262,144	            0.138
-    131,072	            0.137
+    131,072	            0.137  ===> Most Optimal when 131,072
     65,536	            0.142
     32,768	            0.202
     16,384	            0.161
 
+As we can see the trend above, the time taken to sort decreases as the threshold decreases, 
+but at some point, the time taken to sort increases again. So below is the explanation of 
+why this trend is happening.
 
 The parsort program utilizes a fork/join parallel computation model. 
 As the threshold lowers, the program increases the degree of parallelism 
@@ -137,7 +140,7 @@ scheduled by the OS kernel on different CPU cores. This parallel execution
 significantly speeds up the sorting process, especially when the number of 
 processes aligns well with the number of available CPU cores.
 
-The best performance was observed at a threshold of 262,144, beyond which 
+The best performance was observed at either a threshold of 262,144 or 131,072, beyond which 
 the sorting time began to increase slightly with more parallelism. This can 
 be attributed to the fact that the optimal level of parallelism for the given 
 hardware was reached at this point. Beyond this threshold, the number of processes 
